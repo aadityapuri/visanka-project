@@ -9,6 +9,21 @@ const conn = mysql.createConnection({
   database: process.env.DATABASE
 });
 
+exports.login = (req,res)=>{
+  const {email, password} = req.body;
+
+  const token = jwt.sign(email, process.env.SECRET_KEY, {expiresIn: "10s"});
+  res.cookie("token", token, {
+    httpOnly: true,
+  });
+
+  return res.redirect("/profile");
+}
+
+exports.profile = (req,res)=>{
+  console.log("This is profile page");
+}
+
 exports.register = (req,res)=>{
   console.log(req.body);
   const data = req.body;
@@ -29,7 +44,7 @@ exports.register = (req,res)=>{
     let hashedPass = await bcryptjs.hash(password,8);
     console.log(hashedPass);
 
-    conn.query('INSERT INTO user_signup SET ?',{username:username, email:email, password:password, mobile:number, referral_id:referral},(error,results)=>{
+    conn.query('INSERT INTO user_signup SET ?',{username:username, email:email, password:hashedPass, mobile:number, referral_id:referral},(error,results)=>{
       if(error){
         throw error;
       }

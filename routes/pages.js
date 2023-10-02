@@ -9,4 +9,8 @@ router.get('/register',(req, res)=>{
   res.render('register');
 });
 
+router.get('/profile',(req, res)=>{
+  res.render('profile');
+});
+
 module.exports = router;

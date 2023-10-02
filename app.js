@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const mysql = require("mysql");
 const dontenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 
 dontenv.config({path: './.env'});
 
@@ -19,6 +20,7 @@ app.use(express.static(publicDirectory));
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
+app.use(cookieParser());
 
 app.set('view engine', 'hbs');
 
